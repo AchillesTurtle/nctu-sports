@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
-from . import forms
+from .forms import SignUpForm
 
 def register(request):
     if request.method == 'POST':
-        form = forms.SignUpForm(request.POST)
+        form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save()
             username = form.cleaned_data.get('username')
@@ -14,5 +14,5 @@ def register(request):
             login(request, user)
             return redirect('home')
     else:
-        form = forms.SignUpForm()
+        form = SignUpForm()
     return render(request, 'registration/register.html', locals())

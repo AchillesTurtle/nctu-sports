@@ -15,7 +15,7 @@
     <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="{% static css/scrolling-nav.css %}" rel="stylesheet">
+    <link href="{% static 'css/scrolling-nav.css' %}" rel="stylesheet">
 
   </head>
 
@@ -31,17 +31,24 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#about">首頁</a>
+              <a class="nav-link js-scroll-trigger" href="{% url 'home' %}">首頁</a>
             </li>
             <li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="#services">活動報名</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#contact">註冊</a>
+              <a class="nav-link js-scroll-trigger" href="{% url 'register' %}">註冊</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#contact">登入</a>
-            </li>
+            {% if request.user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="{% url 'logout' %}" onclick="return confirm('確定登出?')">登出</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="{% url 'login' %}">登入</a>
+                </li>
+            {% endif %}
+            
           </ul>
         </div>
       </div>
@@ -59,8 +66,10 @@
         <div class="row">
           <div class="col-lg-8 mx-auto">
             <h2>最新公告</h2>
-            <p class="lead">This is a great place to talk about your webpage. This template is purposefully unstyled so you can use it as a boilerplate or starting point for you own landing page designs! This template features:</p>
             <hr>
+            {% if perms.Announcement.add %}
+            <a href="{% url 'anncadd' %}" class="btn btn-info">新增公告</a>
+            {% endif %}
             <!--<div class="list-group">
                   <a href="#" class="list-group-item">Clickable nav links that smooth scroll to page sections</a>
                   <a href="#" class="list-group-item">Responsive behavior when clicking nav links perfect for a one page website</a>
@@ -74,46 +83,22 @@
             </div>-->
             <table class="table table-striped table-hover">
                 <tbody>
+                    {% for annc in anncs %}
                     <tr>
-                      <td>2017/4/3</td>
-                      <td><a href="#" style="text-decoration:none;">Clickable nav links that smooth scroll to page sections</a></td>
+                      <td>{{ annc.published_date }}</td>
+                      <td><a href="{% url 'anncdetail' pk=annc.pk %}" style="text-decoration:none;">{{ annc.title }}</a></td>
                       <td>            
                         <div class="btn-group">
-                            <a href="#" class="btn btn-info">修改</a>
-                            <a href="#" class="btn btn-danger">刪除</a>
+                            {% if perms.Announcement.change %}
+                            <a href="{% url 'anncedit' pk=annc.pk %}" class="btn btn-info">修改</a>
+                            {% endif %}
+                            {% if perms.Announcement.delete %}
+                            <a href="{% url 'anncdelete' pk=annc.pk %}" class="btn btn-danger" onclick="return confirm('確定刪除?')">刪除</a>
+                            {% endif %}
                         </div>
                       </td>
                     </tr>
-                    <tr>
-                      <td>2017/4/3</td>
-                      <td><a href="#" style="text-decoration:none;">Responsive behavior when clicking nav links perfect </a></td>
-                      <td>            
-                        <div class="btn-group">
-                            <a href="#" class="btn btn-info">修改</a>
-                            <a href="#" class="btn btn-danger">刪除</a>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>2017/4/3</td>
-                      <td><a href="#" style="text-decoration:none;">Bootstrap's scrollspy feature which highlights which</a></td>
-                      <td>            
-                        <div class="btn-group">
-                            <a href="#" class="btn btn-info">修改</a>
-                            <a href="#" class="btn btn-danger">刪除</a>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>2017/4/3</td>
-                      <td><a href="#" style="text-decoration:none;">猜拳啊</a></td>
-                      <td>            
-                        <div class="btn-group">
-                            <a href="#" class="btn btn-info">修改</a>
-                            <a href="#" class="btn btn-danger">刪除</a>
-                        </div>
-                      </td>
-                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
           </div>
@@ -153,14 +138,14 @@
     </footer>
 
     <!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
     <!-- Plugin JavaScript -->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
 
     <!-- Custom JavaScript for this theme -->
-    <script src="js/scrolling-nav.js"></script>
+    <script src="{% static 'js/scrolling-nav.js' %}"></script>
 
   </body>
 
