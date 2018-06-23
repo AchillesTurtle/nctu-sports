@@ -1,0 +1,41 @@
+{% load static %}
+<html>
+<head>
+    <link rel="stylesheet" href="{% static 'css/register.css' %}" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $(function() {
+            $('.captcha').click(function () {
+            $.getJSON("/captcha/refresh/", function (result) {
+            $('.captcha').attr('src', result['image_url']);
+            $('#id_captcha_0').val(result['key'])
+            });
+        });
+        });
+    </script>
+</head>
+<body>
+    <div class="body-content">
+    <div class="module">
+        <h1>Create an account</h1>
+        <form class="form" action="" method="post">
+            {% csrf_token %}            
+            {% for field in form %}
+            <p>
+                {% if field == form.captcha %}
+                    <br>{{field.label_tag}}<br><br>
+                {% endif %}
+                {{ field }}
+                {% for error in field.errors %}
+                <p style="color: red">{{ error }}</p>
+                {% endfor %}
+            </p>
+            {% endfor %}
+            <button class='captcha'>Refresh</button>
+            <input type="submit" value="Register" class="btn btn-block btn-primary" />
+            <input type="button" class="btn btn-block btn-primary" value="Cancel" onclick="location.href='{% url 'home' %}'">
+        </form>
+    </div>
+    </div>
+</body>
+</html>

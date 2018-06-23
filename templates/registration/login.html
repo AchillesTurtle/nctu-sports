@@ -153,7 +153,8 @@ input:-webkit-autofill{
 			<input type="password" placeholder="密碼" name="password"><br>
 			<input type="submit" value="登入"/>
 			{% csrf_token %}
-		</div>
+			<a href="{% url 'register' %}">註冊</a>
+		</div>		
 		</form>
 </body>
 </html>
