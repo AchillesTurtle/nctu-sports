@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -63,6 +64,10 @@
           <p>{{ annc.published_date }}</p>
 
           <hr>
+          <!-- Image -->
+          {% if annc.picture %}
+            <img class="img-fluid rounded" alt="" src="{% static annc.picture.url %}">
+          {% endif %}
 
           <!-- Post Content -->
           <p>{{ annc.text }}</p>
