@@ -59,15 +59,13 @@
                     <h4 class="card-title">{{ event.name }}</h4>
                     <p class="card-text">{{ event.text }}</p>
                 </div>
-                <div class="card-footer">
-                    {% if perms.SportsEvent.change %}
+                {% if perms.SportsEvent.change %}
+                <div class="card-footer">                    
                     <a href="{% url 'eventedit' pk=event.pk %}" class="btn btn-info btn-sm" role="button">修改</a>
                     <a href="{% url 'eventstatus' pk=event.pk %}" class="btn btn-info btn-sm" role="button">報名狀況</a>
-                    {% endif %}
-                    {% if perms.SportsEvent.delete %}
                     <a href="{% url 'eventdelete' pk=event.pk %}" class="btn btn-info btn-sm" role="button" onclick="return confirm('確定刪除?')">移除</a>
-                    {% endif %}
                 </div>
+                {% endif %}
             </div>
         </div>
         {% endfor %}

@@ -81,6 +81,48 @@ def eventsignup(request, pk):
         form = TeamForm()
     return render(request,'web/events_signup.html', {'event':event, 'form':form})
 
+def eventsignup_edit(request, pk):
+    #
+    #要判斷是否有自己!
+    #
+    #
+    event = get_object_or_404(SportsEvent.objects.filter(is_deleted=False), pk=pk)    
+    if request.method == 'POST':
+        # check team limit
+        if request.user.is_authenticated and request.user.has_perm('SportsEvent.change'):
+            form = TeamForm(request.POST)            
+            if form.is_valid():                
+                team = form.save()
+                event.reg_teams.add(team)
+                event.save()
+                messages.success(request, '報名成功！')
+                return redirect('eventlist')
+        else:
+            if event.team_limit <= event.reg_teams.count():
+                messages.error(request, '隊伍數已滿！')
+                return redirect('eventlist')
+            else:
+                form = TeamForm(request.POST)            
+                if form.is_valid():                
+                    team = form.save(commit=False)
+                    if event.size_limit < form.cleaned_data.get('students').count():
+                        messages.error(request, '超過規定人數！')
+                        return render(request,'web/events_signup_edit.html', {'event':event, 'form':form})
+                    else:
+                        team.save()
+                        form.save_m2m()
+                        event.reg_teams.add(team)
+                        event.save()
+                        messages.success(request, '報名成功！')
+                    return redirect('eventlist')
+    else:
+        form = TeamForm()
+    return render(request,'web/events_signup_edit.html', {'event':event, 'form':form})
+
+def eventsignup_list(request):
+    events = SportsEvent.objects.filter(is_deleted=False).order_by('-start_date')
+    return render(request,'web/events_signup_list.html', {'events':events})
+
 @permission_required('SportsEvent.change', login_url='login')
 def eventstatus(request, pk):
     event = get_object_or_404(SportsEvent, pk=pk)
