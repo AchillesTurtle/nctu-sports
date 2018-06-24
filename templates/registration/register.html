@@ -1,8 +1,7 @@
-{% load static %}
-<html>
-<head>
-    <link rel="stylesheet" href="{% static 'css/register.css' %}" type="text/css">
-    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+{% extends 'web/base.html' %}
+{% block title %}
+    <title>註冊</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
         $(function() {
             $('.captcha').click(function () {
@@ -13,29 +12,37 @@
         });
         });
     </script>
-</head>
-<body>
-    <div class="body-content">
-    <div class="module">
-        <h1>Create an account</h1>
-        <form class="form" action="" method="post">
-            {% csrf_token %}            
-            {% for field in form %}
-            <p>
-                {% if field == form.captcha %}
-                    <br>{{field.label_tag}}<br><br>
-                {% endif %}
-                {{ field }}
-                {% for error in field.errors %}
-                <p style="color: red">{{ error }}</p>
-                {% endfor %}
-            </p>
-            {% endfor %}
-            <button class='captcha'>Refresh</button>
-            <input type="submit" value="Register" class="btn btn-block btn-primary" />
-            <input type="button" class="btn btn-block btn-primary" value="Cancel" onclick="location.href='{% url 'home' %}'">
-        </form>
+{% endblock %}
+{% block content %}
+    <!-- Page Content -->
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h2>註冊 </h2>
+                <hr>
+                <!-- Jumbotron Header -->
+                <header class="jumbotron my-4 pb-4">
+                    <form class="form" action="" method="post">
+                        {% csrf_token %}
+                        {% for field in form %}
+                        <div class="form-group">
+                            {{field.label_tag}}
+                            {{ field }}
+                            {% for error in field.errors %}
+                            <p style="color: red">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+                        <button class="captcha">Refresh</button>
+                        <div class="text-center">
+                            <div class="button-group mt-2 mx-auto">                                
+                                <input type="submit" class="btn btn-info mt-2 mx-3 px-5" value="註冊"/>
+                                <input type="button" class="btn btn-outline-danger mt-2 px-5" onclick="location.href='{% url 'home' %}'" value="取消"/>
+                            </div>
+                        </div>
+                    </form>
+                </header>
+            </div>
+        </div>
     </div>
-    </div>
-</body>
-</html>
+{% endblock %}

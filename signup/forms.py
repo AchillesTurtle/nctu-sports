@@ -11,14 +11,23 @@ class SignUpForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', )
+        fields = ('username', 'last_name', 'first_name', 'email', 'password1', 'password2', )
 
     def __init__(self, *args, **kwargs):
         super(SignUpForm, self).__init__(*args, **kwargs)
-        self.fields['username'].widget.attrs.update({'placeholder' : 'Student ID'})
-        self.fields['first_name'].widget.attrs.update({'placeholder' : 'First Name'})
-        self.fields['last_name'].widget.attrs.update({'placeholder' : 'Last Name'})
-        self.fields['email'].widget.attrs.update({'placeholder' : 'Email'})
-        self.fields['password1'].widget.attrs.update({'placeholder' : 'Password'})
-        self.fields['password2'].widget.attrs.update({'placeholder' : 'Password Again'})
-        self.fields['captcha'].widget.attrs.update({'placeholder' : 'Enter the characters above'})
+        self.fields['username'].label='Student ID'
+        self.fields['username'].widget.attrs.update({'placeholder' : 'Student ID', 'class' : 'form-control'})
+        self.fields['first_name'].widget.attrs.update({'placeholder' : 'First Name', 'class' : 'form-control'})
+        self.fields['last_name'].widget.attrs.update({'placeholder' : 'Last Name', 'class' : 'form-control'})
+        self.fields['email'].widget.attrs.update({'placeholder' : 'Email', 'class' : 'form-control'})
+        self.fields['password1'].widget.attrs.update({'placeholder' : 'Password', 'class' : 'form-control'})
+        self.fields['password2'].widget.attrs.update({'placeholder' : 'Password Again', 'class' : 'form-control'})
+        self.fields['captcha'].widget.attrs.update({'placeholder' : 'Enter the characters above', 'class' : 'form-control'})
+
+        self.fields['username'].label='學號'
+        self.fields['first_name'].label='名字'
+        self.fields['last_name'].label='姓'
+        self.fields['email'].label='電子郵件'
+        self.fields['password1'].label='密碼'
+        self.fields['password2'].label='確認密碼'
+        self.fields['captcha'].label='輸入圖片中看到的英文及數字'

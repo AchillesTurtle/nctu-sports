@@ -1,11 +1,13 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
-<head>
+  <head>
 
-  <meta charset="UTF-8">
-
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
   <title>Login</title>
 
     <style>
@@ -22,7 +24,7 @@
 	bottom: -40px;
 	width: auto;
 	height: auto;
-	background-image: url("{% static 'web/fox.jpg' %}");
+	background-image: url("{%static 'images/fox.jpg' %}");
 	background-size: cover;
 	filter:blur(0px);
 	-webkit-filter: blur(0px);	
@@ -137,11 +139,51 @@ input:-webkit-autofill{
 }
 
 </style>
-</head>
+   <!-- Bootstrap core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 
-<body>
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/nctu-sports.css' %}" rel="stylesheet">
 
-  <div class="body"></div>
+  </head>
+
+  <body id="page-top">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-custom fixed-top" id="mainNav">
+      <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="#page-top">NCTUsports</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="{% url 'home' %}">首頁</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#services">活動報名</a>
+            </li>
+            {% if request.user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="{% url 'logout' %}" onclick="return confirm('確定登出?')">登出</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="{% url 'register' %}">註冊</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="{% url 'login' %}">登入</a>
+                </li>
+            {% endif %}
+            
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+
+    <div class="body"></div>
 		<div class="grad"></div>
 		<div class="header">
 			<div>你好<span>請登入</span></div>
@@ -156,5 +198,17 @@ input:-webkit-autofill{
 			<a href="{% url 'register' %}">註冊</a>
 		</div>		
 		</form>
-</body>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+    <!-- Custom JavaScript for this theme -->
+    <script src="{% static 'js/scrolling-nav.js' %}"></script>
+
+  </body>
+
 </html>

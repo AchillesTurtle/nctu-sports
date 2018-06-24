@@ -8,3 +8,14 @@ class Announcement(models.Model):
 
     def __str__(self):
         return self.title
+
+class SportsEvent(models.Model):
+    name = models.CharField(max_length=200)
+    text = models.TextField()
+    start_date = models.DateField()
+    team_limit = models.IntegerField()
+    size_limit = models.IntegerField()
+    picture = models.ImageField(blank=True,null=True,upload_to='static/eventspic/')
+
+    def __str__(self):
+        return self.name

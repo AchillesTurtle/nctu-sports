@@ -28,18 +28,18 @@
                 <tbody>
                     {% for annc in anncs %}
                     <tr>
-                      <td>{{ annc.published_date }}</td>
-                      <td><a href="{% url 'anncdetail' pk=annc.pk %}" style="text-decoration:none;">{{ annc.title }}</a></td>
-                      <td>            
-                        <div class="btn-group">
-                            {% if perms.Announcement.change %}
-                            <a href="{% url 'anncedit' pk=annc.pk %}" class="btn btn-info">修改</a>
-                            {% endif %}
-                            {% if perms.Announcement.delete %}
-                            <a href="{% url 'anncdelete' pk=annc.pk %}" class="btn btn-danger" onclick="return confirm('確定刪除?')">刪除</a>
-                            {% endif %}
-                        </div>
-                      </td>
+                        <td>{{ annc.published_date }}</td>
+                        <td><a href="{% url 'anncdetail' pk=annc.pk %}" style="text-decoration:none;">{{ annc.title }}</a></td>
+                        <td>            
+                            <div class="btn-group">
+                                {% if perms.Announcement.change %}
+                                <a href="{% url 'anncedit' pk=annc.pk %}" class="btn btn-info">修改</a>
+                                {% endif %}
+                                {% if perms.Announcement.delete %}
+                                <a href="{% url 'anncdelete' pk=annc.pk %}" class="btn btn-danger" onclick="return confirm('確定刪除?')">刪除</a>
+                                {% endif %}
+                            </div>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
