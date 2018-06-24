@@ -29,15 +29,19 @@
             {% endif %}
             
             <div class="card-body">
-              <h4 class="card-title">{{ event.name }}</h4>
-              <p class="card-text">{{ event.text }}</p>
+                <h4 class="card-title">{{ event.name }}</h4>
+                <p class="card-text">{{ event.text }}</p>
             </div>
             <div class="card-footer">
+            {% if event.is_past_due %}                            
+                <label class="text-danger">已過期！</label>
+            {% else %}
                 {% if request.user.is_authenticated %}
-                    <a href="{% url 'home' %}" class="btn btn-primary" role="button">報名！</a>
+                    <a href="{% url 'login' %}" class="btn btn-primary" role="button">報名！</a>
                 {% else %}
                     <a href="{% url 'eventsignup' pk=event.pk %}" class="btn btn-primary" role="button">報名！</a>
                 {% endif %}
+            {% endif %}                
             </div>
             <div class="card-footer">
                 {% if perms.SportsEvent.change %}
