@@ -11,9 +11,8 @@
             <p class="lead"></p>
             <hr>
             
-            <!-- for events-->
             <div class="page-header mt-4">
-                <h5><strong>馬力歐賽車</strong></h5>
+                <h5><strong>{{event.name}}</strong></h5>
             </div>
             <table class="table">
                 <thead>
@@ -21,29 +20,21 @@
                         <th scope="col">隊伍名稱</th>
                         <th scope="col">隊伍成員</th>
                     </tr>
-                </thead>
+                </thead>               
                 
-                <!-- for teams in event-->
                 <tbody>
+                    {% for team in event.reg_teams.all %}
                     <tr>
-                        <td>馬力歐大車隊</td><!--team name-->
+                        <td>{{team.name}}</td>
                         <td><!--members name-->
                             <ul class=list-unstyled>
-                                <li>0410011 路易吉</li>
-                                <li>0985231 碧姬</li>
+                                {% for student in team.students.all %}
+                                    <li>{{student.username}} {{student.last_name}}{{student.first_name}}</li>
+                                {% endfor %}
                             </ul>
                         </td>
                     </tr>
-                    <tr>
-                        <td>瓦力歐小車隊</td><!--team name-->
-                        <td><!--members name-->
-                            <ul class=list-unstyled>
-                                <li>04189011 庫巴</li>
-                                <li>0985231 汪汪</li>
-                                <li>1692793 蘑菇頭</li>
-                            </ul>
-                        </td>
-                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
           </div>

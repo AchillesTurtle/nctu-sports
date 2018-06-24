@@ -48,8 +48,8 @@ def eventlist(request):
     return render(request,'web/events.html', {'events':events})
 
 def eventsignup(request, pk):
-    events = SportsEvent.objects.all().order_by('-start_date')
-    return render(request,'web/events.html', {'events':events})
+    event = get_object_or_404(SportsEvent.objects.filter(is_deleted=False), pk=pk)
+    return render(request,'web/events.html', {'event':event})
 
 @permission_required('SportsEvent.change', login_url='login')
 def eventstatus(request, pk):

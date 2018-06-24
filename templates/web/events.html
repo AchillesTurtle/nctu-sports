@@ -37,9 +37,9 @@
                 <label class="text-danger">已過期！</label>
             {% else %}
                 {% if request.user.is_authenticated %}
-                    <a href="{% url 'login' %}" class="btn btn-primary" role="button">報名！</a>
+                    <a href="{% url 'eventsignup' pk=event.pk %}" class="btn btn-primary" role="button">報名！</a>                    
                 {% else %}
-                    <a href="{% url 'eventsignup' pk=event.pk %}" class="btn btn-primary" role="button">報名！</a>
+                    <a href="{% url 'login' %}" class="btn btn-primary" role="button">報名！</a>
                 {% endif %}
             {% endif %}                
             </div>
