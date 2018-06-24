@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required, permission_required
 from .models import Announcement, SportsEvent
-from .forms import AnncForm, EventForm
+from .forms import AnncForm, EventForm, TeamForm
 
 def home(request):
     anncs = Announcement.objects.all().order_by('-published_date')
@@ -39,7 +39,7 @@ def anncedit(request, pk):
 @permission_required('Announcement.delete', login_url='login')
 def anncdelete(request, pk):
     Announcement.objects.filter(pk=pk).delete()
-    messages.success(request, '刪除成功!')
+    messages.success(request, '刪除成功！')
     return redirect('home')
 
 # Events part:
@@ -48,8 +48,38 @@ def eventlist(request):
     return render(request,'web/events.html', {'events':events})
 
 def eventsignup(request, pk):
-    event = get_object_or_404(SportsEvent.objects.filter(is_deleted=False), pk=pk)
-    return render(request,'web/events.html', {'event':event})
+    event = get_object_or_404(SportsEvent.objects.filter(is_deleted=False), pk=pk)    
+    if request.method == 'POST':
+        # check team limit
+        if request.user.is_authenticated and request.user.has_perm('SportsEvent.change'):
+            form = TeamForm(request.POST)            
+            if form.is_valid():                
+                team = form.save()
+                event.reg_teams.add(team)
+                event.save()
+                messages.success(request, '報名成功！')
+                return redirect('eventlist')
+        else:
+            if event.team_limit <= event.reg_teams.count():
+                messages.error(request, '隊伍數已滿！')
+                return redirect('eventlist')
+            else:
+                form = TeamForm(request.POST)            
+                if form.is_valid():                
+                    team = form.save(commit=False)
+                    if event.size_limit < form.cleaned_data.get('students').count():
+                        messages.error(request, '超過規定人數！')
+                        return render(request,'web/events_signup.html', {'event':event, 'form':form})
+                    else:
+                        team.save()
+                        form.save_m2m()
+                        event.reg_teams.add(team)
+                        event.save()
+                        messages.success(request, '報名成功！')
+                    return redirect('eventlist')
+    else:
+        form = TeamForm()
+    return render(request,'web/events_signup.html', {'event':event, 'form':form})
 
 @permission_required('SportsEvent.change', login_url='login')
 def eventstatus(request, pk):
@@ -84,5 +114,5 @@ def eventdelete(request, pk):
     event = SportsEvent.objects.get(pk=pk)
     event.is_deleted = True
     event.save()
-    messages.success(request, '刪除成功!')
+    messages.success(request, '刪除成功！')
     return redirect('eventlist')

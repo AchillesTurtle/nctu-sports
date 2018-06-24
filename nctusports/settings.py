@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'signup',
     'web',
     'captcha',
+    'mathfilters',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

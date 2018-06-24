@@ -1,69 +1,53 @@
 {% extends 'web/base.html' %}
 {% block title %}
     <title>報名活動</title>
+    <script>
+        var counter = 0;
+        function moreFields() {
+            counter++;
+            var newFields = document.getElementById('teammem').cloneNode(true);
+            newFields.id = '';
+            var newField = newFields.childNodes;
+            for (var i=0;i<newField.length;i++) {
+                var theName = newField[i].name
+                if (theName){
+                    newField[i].name = theName + counter;
+                    alert(theName);
+                }
+            }
+            var insertHere = document.getElementById('writeroot');
+            insertHere.parentNode.insertBefore(newFields,insertHere);
+        }
+    </script>
 {% endblock %}
 {% block content %}
+{% load mathfilters %}
     <!-- Page Content -->
     <div class="container mt-4">
         <div class="row">
             <div class="col-lg-8 mx-auto">
               
-                <h2 class="display-4">活動報名：馬力歐賽車 </h2>
+                <h2 class="display-4">活動報名：{{event.name}}</h2>
                 <hr>
                 <header class="jumbotron my-4 py-4">
                 <ul class="list-unstyled my-0">
-                    <li>每隊上限：group_limit</li>
-                    <li>每隊上限：p_limit</li>
-                    <li>已報名隊伍：signup_count</li>
-                    <li>尚可報名：group_limit-signup_count</li>
+                    <li>隊伍數量上限：{{event.team_limit}} 隊</li>
+                    <li>每隊人數上限：{{event.size_limit}} 人</li>
+                    <li>已報名隊伍數：{{event.reg_teams.count}} 隊</li>
+                    <li>尚可報名：{{ event.team_limit|sub:event.reg_teams.count }} 隊</li>
                 </ul>
                 </header>
-                <div class="form-group col-sm-6">
-                    <label for="event_name">隊伍名稱</label>
-                    <input type="text" class="form-control" name="add_event_name" id="event_name">
-                </div>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th style="width:33.33%">學號</th>
-                            <th style="width:33.33%">姓名</th>
-                            <th style="width:33.33%"></th>
-                        </tr>
-                    </thead>
-                    
-                    <!-- for loop existed members-->
-                    <tbody>
-                        <tr>
-                            <td>0410011</td>
-                            <td>路易吉</td>
-                            <td>
-                                <div class="btn-group float-right">
-                                    <a href="#" class="btn btn-info">修改</a>
-                                    <a href="#" class="btn btn-danger">刪除</a>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                    
-                    <!-- not existed member-->
-                    <tbody>
-                        <tr>
-                            <td>
-                                <input type="text" class="form-control mr-2" placeholder="ID" name="mem_id" required />
-                            </td>
-                            <td>
-                                <input type="text" class="form-control" placeholder="名字" name="mem_name" required />
-                            </td>
-                            <td>
-                                <a href="#" class="btn btn-info float-right mx-2">新增成員</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="btn-group my-4">
-                    <a href="#" class="btn btn-primary active">提交報名</a>
-                    <a href="#" class="btn btn-default">取消</a>
-                </div>
+                {% for message in messages %}
+                <p style="color: red">{{ message }}</p>
+                {% endfor %}
+                <form action="" method="post">
+                    {% csrf_token %}
+                    {{form.as_p}}
+                    <div class="btn-group my-4">
+                        <input type="submit" class="btn btn-primary active" value="提交報名">
+                        <a href="{% url 'eventlist' %}" class="btn btn-default">取消</a>
+                    </div>
+                </form>                
             </div>
         </div>
     </div>

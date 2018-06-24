@@ -15,7 +15,6 @@ class SignUpForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         super(SignUpForm, self).__init__(*args, **kwargs)
-        self.fields['username'].label='Student ID'
         self.fields['username'].widget.attrs.update({'placeholder' : 'Student ID', 'class' : 'form-control'})
         self.fields['first_name'].widget.attrs.update({'placeholder' : 'First Name', 'class' : 'form-control'})
         self.fields['last_name'].widget.attrs.update({'placeholder' : 'Last Name', 'class' : 'form-control'})
