@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required, permission_required
-from .models import Announcement, SportsEvent
+from .models import Announcement, SportsEvent, Team
 from .forms import AnncForm, EventForm, TeamForm
 
 def home(request):
@@ -47,6 +47,7 @@ def eventlist(request):
     events = SportsEvent.objects.filter(is_deleted=False).order_by('-start_date')
     return render(request,'web/events.html', {'events':events})
 
+@login_required
 def eventsignup(request, pk):
     event = get_object_or_404(SportsEvent.objects.filter(is_deleted=False), pk=pk)    
     if request.method == 'POST':
@@ -81,6 +82,7 @@ def eventsignup(request, pk):
         form = TeamForm()
     return render(request,'web/events_signup.html', {'event':event, 'form':form})
 
+@login_required
 def eventsignup_edit(request, pk):
     #
     #要判斷是否有自己!
@@ -119,8 +121,15 @@ def eventsignup_edit(request, pk):
         form = TeamForm()
     return render(request,'web/events_signup_edit.html', {'event':event, 'form':form})
 
+@login_required
 def eventsignup_list(request):
-    events = SportsEvent.objects.filter(is_deleted=False).order_by('-start_date')
+    result = []
+    myteams = Team.objects.filter(students=request.user).all()
+    for event in SportsEvent.objects.all():
+        for team in myteams:
+            if team in event.reg_teams.all():
+                result.append((event, team))
+    print(result)
     return render(request,'web/events_signup_list.html', {'events':events})
 
 @permission_required('SportsEvent.change', login_url='login')

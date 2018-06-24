@@ -162,7 +162,7 @@ input:-webkit-autofill{
               <a class="nav-link js-scroll-trigger" href="{% url 'home' %}">首頁</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#services">活動報名</a>
+              <a class="nav-link js-scroll-trigger" href="{% url 'eventlist' %}">活動報名</a>
             </li>
             {% if request.user.is_authenticated %}
                 <li class="nav-item">
