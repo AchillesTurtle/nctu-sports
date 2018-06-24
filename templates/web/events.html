@@ -11,7 +11,9 @@
         <h1 class="display-3">盛大歡迎！</h1>
         <span class="card"><img class="card-img-top" src="images/fox.jpg" alt=""></span>
         <p class="lead">歡迎各位同學踴躍報名體育週</p>
-        <p><a href="{% url 'register' %}" class="btn btn-primary btn-lg">立刻註冊!</a></p>
+        {% if not request.user.is_authenticated %}
+        <p><a href="{% url 'register' %}" class="btn btn-info btn-lg mt-4">立刻註冊!</a></p>
+        {% endif %}
         {% for message in messages %}
         <p style="color: red">{{ message }}</p>
         {% endfor %}
@@ -24,35 +26,49 @@
         {% for event in events %}
         <div class="col-lg-3 col-md-6 mb-4">
             <div class="card">
-            {% if event.picture %}
-            <img class="card-img-top" src="/{{ event.picture.url }}" alt="">
-            {% endif %}
-            
-            <div class="card-body">
-                <h4 class="card-title">{{ event.name }}</h4>
-                <p class="card-text">{{ event.text }}</p>
-            </div>
-            <div class="card-footer">
-            {% if event.is_past_due %}                            
-                <label class="text-danger">已過期！</label>
-            {% else %}
-                {% if request.user.is_authenticated %}
-                    <a href="{% url 'eventsignup' pk=event.pk %}" class="btn btn-primary" role="button">報名！</a>                    
+                {% if event.is_past_due %} 
+                {% elif request.user.is_authenticated %}
+                    <a href="{% url 'eventsignup' pk=event.pk %}">                  
                 {% else %}
-                    <a href="{% url 'login' %}" class="btn btn-primary" role="button">報名！</a>
+                    <a href="{% url 'login' %}">
                 {% endif %}
-            {% endif %}                
+                <div class="img_wrap">
+                    {% if event.picture %}
+                        <img class="card-img-top-s" src="/{{ event.picture.url }}" alt="Card image cap">
+                    {% else %}
+                        <img class="card-img-top-s" src="http://sport.sa.nctu.edu.tw/wp-content/uploads/sites/12/KF_track-field.jpg" alt="">
+                    {% endif %}
+                    
+                    {% if event.is_past_due %}
+                        <div class="img_expire">
+                            <h1 class="img_description">已過期</h1>
+                        </div>
+                    {% else %}
+                        <div class="img_description_layer">
+                            <h1 class="img_description">報名</h1>
+                        </div>
+                    {% endif %}
+                </div>
+                </a>
+                
+                <!--<div class="card-body">
+                    <h4 class="card-title">{{ event.name }}</h4>
+                    <p class="card-text">{{ event.text }}</p>
+                </div>-->
+                <div class="card-footer">
+                    <h4 class="card-title">{{ event.name }}</h4>
+                    <p class="card-text">{{ event.text }}</p>
+                </div>
+                <div class="card-footer">
+                    {% if perms.SportsEvent.change %}
+                    <a href="{% url 'eventedit' pk=event.pk %}" class="btn btn-info btn-sm" role="button">修改</a>
+                    <a href="{% url 'eventstatus' pk=event.pk %}" class="btn btn-info btn-sm" role="button">報名狀況</a>
+                    {% endif %}
+                    {% if perms.SportsEvent.delete %}
+                    <a href="{% url 'eventdelete' pk=event.pk %}" class="btn btn-info btn-sm" role="button" onclick="return confirm('確定刪除?')">移除</a>
+                    {% endif %}
+                </div>
             </div>
-            <div class="card-footer">
-                {% if perms.SportsEvent.change %}
-                <a href="{% url 'eventedit' pk=event.pk %}" class="btn btn-primary btn-sm" role="button">修改</a>
-                <a href="{% url 'eventstatus' pk=event.pk %}" class="btn btn-primary btn-sm" role="button">報名狀況</a>
-                {% endif %}
-                {% if perms.SportsEvent.delete %}
-                <a href="{% url 'eventdelete' pk=event.pk %}" class="btn btn-primary btn-sm" role="button" onclick="return confirm('確定刪除?')">移除</a>
-                {% endif %}
-            </div>
-          </div>
         </div>
         {% endfor %}
 
