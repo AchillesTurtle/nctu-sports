@@ -44,7 +44,7 @@ def anncdelete(request, pk):
 
 # Events part:
 def eventlist(request):
-    events = SportsEvent.objects.all().order_by('-start_date')
+    events = SportsEvent.objects.filter(is_deleted=False).order_by('-start_date')
     return render(request,'web/events.html', {'events':events})
 
 def eventsignup(request, pk):
@@ -81,6 +81,8 @@ def eventedit(request, pk):
 
 @permission_required('SportsEvent.delete', login_url='login')
 def eventdelete(request, pk):
-    SportsEvent.objects.filter(pk=pk).delete()
+    event = SportsEvent.objects.get(pk=pk)
+    event.is_deleted = True
+    event.save()
     messages.success(request, '刪除成功!')
     return redirect('eventlist')
