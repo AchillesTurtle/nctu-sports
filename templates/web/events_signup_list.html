@@ -1,16 +1,19 @@
 {% extends 'web/base.html' %}
 {% block title %}
-    <title>報名狀況</title>
+    <title>我的報名狀況</title>
 {% endblock %}
 {% block content %}
     <section id="about">
       <div class="container">
         <div class="row">
           <div class="col-lg-8 mx-auto">
-            <h2>報名狀況</h2>
+            <h2>我的報名狀況</h2>
             <p class="lead"></p>
+            {% for message in messages %}
+            <p style="color: red">{{ message }}</p>
+            {% endfor %}
             <hr>
-            <!--{% for events %}-->
+            {% for event, teams in result %}
             <div class="page-header mt-4">
                 <h5><strong>{{event.name}}</strong></h5>
             </div>
@@ -24,7 +27,7 @@
                 </thead>               
                 
                 <tbody>
-                    <!--{% for team in participated teams %}-->
+                    {% for team in teams %}
                     <tr>
                         <td>{{team.name}}</td>
                         <td><!--members name-->
@@ -35,13 +38,13 @@
                             </ul>
                         </td>
                         <td>
-                            <a href="{% url '' %}" class="btn btn-warning">修改</a>
+                            <a href="{% url 'eventsignup_edit' pk=team.pk %}" class="btn btn-warning">修改</a>
                         </td>
                     </tr>
-                    <!--{% endfor %}-->
+                    {% endfor %}
                 </tbody>
             </table>
-            <!--{% endfor %}-->
+            {% endfor %}
           </div>
         </div>
       </div>

@@ -84,53 +84,49 @@ def eventsignup(request, pk):
 
 @login_required
 def eventsignup_edit(request, pk):
-    #
-    #要判斷是否有自己!
-    #
-    #
-    event = get_object_or_404(SportsEvent.objects.filter(is_deleted=False), pk=pk)    
+    # check if self included
+    team = get_object_or_404(Team, pk=pk)
+    if request.user not in team.students.all() and not request.user.has_perm('SportsEvent.change'):
+        return redirect('eventsignup_list')
+    event = get_object_or_404(SportsEvent.objects.filter(is_deleted=False), reg_teams=team)    
     if request.method == 'POST':
-        # check team limit
-        if request.user.is_authenticated and request.user.has_perm('SportsEvent.change'):
-            form = TeamForm(request.POST)            
+        form = TeamForm(request.POST or None, instance=team)  
+        if request.user.is_authenticated and request.user.has_perm('SportsEvent.change'):         
             if form.is_valid():                
                 team = form.save()
-                event.reg_teams.add(team)
-                event.save()
-                messages.success(request, '報名成功！')
-                return redirect('eventlist')
-        else:
-            if event.team_limit <= event.reg_teams.count():
-                messages.error(request, '隊伍數已滿！')
-                return redirect('eventlist')
-            else:
-                form = TeamForm(request.POST)            
-                if form.is_valid():                
-                    team = form.save(commit=False)
-                    if event.size_limit < form.cleaned_data.get('students').count():
-                        messages.error(request, '超過規定人數！')
-                        return render(request,'web/events_signup_edit.html', {'event':event, 'form':form})
-                    else:
-                        team.save()
-                        form.save_m2m()
-                        event.reg_teams.add(team)
-                        event.save()
-                        messages.success(request, '報名成功！')
-                    return redirect('eventlist')
+                messages.success(request, '修改成功！')
+                return redirect('eventsignup_list')
+        else:                      
+            if form.is_valid():                
+                team = form.save(commit=False)
+                if event.size_limit < form.cleaned_data.get('students').count():
+                    messages.error(request, '超過規定人數！')
+                    return render(request,'web/events_signup_edit.html', {'event':event, 'form':form})
+                else:
+                    team.save()
+                    form.save_m2m()
+                    messages.success(request, '修改成功！')
+                return redirect('eventsignup_list')
     else:
-        form = TeamForm()
+        form = TeamForm(instance=team)
     return render(request,'web/events_signup_edit.html', {'event':event, 'form':form})
 
 @login_required
 def eventsignup_list(request):
     result = []
-    myteams = Team.objects.filter(students=request.user).all()
+    if request.user.has_perm('SportsEvent.change'):
+        myteams = Team.objects.all()
+    else:
+        myteams = Team.objects.filter(students=request.user).all()
     for event in SportsEvent.objects.all():
+        temp=(event,[])
         for team in myteams:
             if team in event.reg_teams.all():
-                result.append((event, team))
-    print(result)
-    return render(request,'web/events_signup_list.html', {'events':events})
+                temp[1].append(team)
+        if len(temp[1]):
+            result.append(temp)
+    result=sorted(result, key=lambda x: x[0].name)
+    return render(request,'web/events_signup_list.html', {'result':result})
 
 @permission_required('SportsEvent.change', login_url='login')
 def eventstatus(request, pk):

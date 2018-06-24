@@ -1,6 +1,6 @@
 {% extends 'web/base.html' %}
 {% block title %}
-    <title>管理我的報名</title>
+    <title>修改報名資料</title>
 {% endblock %}
 {% block content %}
 {% load mathfilters %}
@@ -9,7 +9,7 @@
         <div class="row">
             <div class="col-lg-8 mx-auto">
               
-                <h2 class="display-4">活動報名：{{event.name}}</h2>
+                <h2 class="display-4">修改報名資料：{{event.name}}</h2>
                 <hr>
                 <header class="jumbotron my-4 py-4">
                 <ul class="list-unstyled my-0">
@@ -27,7 +27,7 @@
                     {{form.as_p}}
                     <div class="btn-group my-4">
                         <input type="submit" class="btn btn-primary active" value="提交報名">
-                        <a href="{% url 'eventlist' %}" class="btn btn-default">取消</a>
+                        <a href="{% url 'eventsignup_list' %}" class="btn btn-default">取消</a>
                     </div>
                 </form>                
             </div>
