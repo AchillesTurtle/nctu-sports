@@ -13,6 +13,9 @@
         <p class="lead">歡迎各位同學踴躍報名體育週</p>
         {% if not request.user.is_authenticated %}
         <p><a href="{% url 'register' %}" class="btn btn-info btn-lg mt-4">立刻註冊!</a></p>
+        {% else%}
+    <!--URL 修改-->
+        <a href="{% url 'events_signup_list' %}" class="btn btn-outline-warning mt-4 mb-0 float-right">報名狀況</a>
         {% endif %}
         {% for message in messages %}
         <p style="color: red">{{ message }}</p>
