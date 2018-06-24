@@ -17,8 +17,8 @@
                 <input type="text" class="form-control" name="name" value="{{ event.name }}" id="event_name">
             </div>
             <div class="form-group col-sm-3">
-                <label for="event_date">活動日期： {{ event.start_date }}</label>
-                <input type="date" class="form-control" name="start_date" id="event_date">
+                <label for="event_date">活動日期：</label>
+                <input type="date" class="form-control" name="start_date" value="{{ event.start_date|date:"Y-m-d" }}" id="event_date">
             </div>
             <div class="form-group col-sm-2">
                 <label for="group_limit">隊伍限制：</label>

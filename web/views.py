@@ -33,7 +33,7 @@ def anncedit(request, pk):
             form.save()
             return redirect('home')
     else:
-        form = AnncForm()
+        form = AnncForm(instance=annc)
     return render(request,'web/anncs_edit.html',{'form':form, 'annc':annc})
 
 @permission_required('Announcement.delete', login_url='login')
@@ -88,7 +88,7 @@ def eventsignup_edit(request, pk):
     team = get_object_or_404(Team, pk=pk)
     if request.user not in team.students.all() and not request.user.has_perm('SportsEvent.change'):
         return redirect('eventsignup_list')
-    event = get_object_or_404(SportsEvent.objects.filter(is_deleted=False), reg_teams=team)    
+    event = get_object_or_404(SportsEvent.objects.filter(is_deleted=False), reg_teams=team)
     if request.method == 'POST':
         form = TeamForm(request.POST or None, instance=team)  
         if request.user.is_authenticated and request.user.has_perm('SportsEvent.change'):         
@@ -128,6 +128,15 @@ def eventsignup_list(request):
     result=sorted(result, key=lambda x: x[0].name)
     return render(request,'web/events_signup_list.html', {'result':result})
 
+@login_required
+def eventsignup_delete(request, pk):
+    team = get_object_or_404(Team, pk=pk)
+    if request.user not in team.students.all() and not request.user.has_perm('SportsEvent.change'):
+        return redirect('eventsignup_list')
+    team.delete()
+    messages.success(request, '刪除成功！')
+    return redirect('eventsignup_list')
+
 @permission_required('SportsEvent.change', login_url='login')
 def eventstatus(request, pk):
     event = get_object_or_404(SportsEvent, pk=pk)
@@ -153,7 +162,7 @@ def eventedit(request, pk):
             form.save()
             return redirect('eventlist')
     else:
-        form = EventForm()
+        form = EventForm(instance=event)
     return render(request,'web/events_edit.html',{'form':form, 'event':event})
 
 @permission_required('SportsEvent.delete', login_url='login')
