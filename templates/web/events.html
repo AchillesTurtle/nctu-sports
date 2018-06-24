@@ -12,12 +12,15 @@
         <span class="card"><img class="card-img-top" src="images/fox.jpg" alt=""></span>
         <p class="lead">歡迎各位同學踴躍報名體育週</p>
         <p><a href="{% url 'register' %}" class="btn btn-primary btn-lg">立刻註冊!</a></p>
+        {% for message in messages %}
+        <p style="color: red">{{ message }}</p>
+        {% endfor %}
         {% if perms.SportsEvent.add %}
         <p><a href="{% url 'eventadd' %}" class="btn btn-warning btn-sm float-right">新增活動</a></p>
         {% endif %}
         </header>
-        <div class="row text-center">
 
+        <div class="row text-center">        
         {% for event in events %}
         <div class="col-lg-3 col-md-6 mb-4">
             <div class="card">

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import auth
+from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required, permission_required
 from .models import Announcement, SportsEvent
 from .forms import AnncForm, EventForm
@@ -39,6 +39,7 @@ def anncedit(request, pk):
 @permission_required('Announcement.delete', login_url='login')
 def anncdelete(request, pk):
     Announcement.objects.filter(pk=pk).delete()
+    messages.success(request, '刪除成功!')
     return redirect('home')
 
 # Events part:
@@ -53,7 +54,7 @@ def eventsignup(request, pk):
 @permission_required('SportsEvent.change', login_url='login')
 def eventstatus(request, pk):
     event = get_object_or_404(SportsEvent, pk=pk)
-    return render(request,'web/eventstatus.html',{'event':event})
+    return render(request,'web/event_status.html',{'event':event})
 
 @permission_required('SportsEvent.add', login_url='login')
 def eventadd(request):
@@ -81,4 +82,5 @@ def eventedit(request, pk):
 @permission_required('SportsEvent.delete', login_url='login')
 def eventdelete(request, pk):
     SportsEvent.objects.filter(pk=pk).delete()
+    messages.success(request, '刪除成功!')
     return redirect('eventlist')

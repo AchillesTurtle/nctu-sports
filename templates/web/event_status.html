@@ -1,0 +1,53 @@
+{% extends 'web/base.html' %}
+{% block title %}
+    <title>報名狀況</title>
+{% endblock %}
+{% block content %}
+    <section id="about">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 mx-auto">
+            <h2>報名狀況</h2>
+            <p class="lead"></p>
+            <hr>
+            
+            <!-- for events-->
+            <div class="page-header mt-4">
+                <h5><strong>馬力歐賽車</strong></h5>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">隊伍名稱</th>
+                        <th scope="col">隊伍成員</th>
+                    </tr>
+                </thead>
+                
+                <!-- for teams in event-->
+                <tbody>
+                    <tr>
+                        <td>馬力歐大車隊</td><!--team name-->
+                        <td><!--members name-->
+                            <ul class=list-unstyled>
+                                <li>0410011 路易吉</li>
+                                <li>0985231 碧姬</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>瓦力歐小車隊</td><!--team name-->
+                        <td><!--members name-->
+                            <ul class=list-unstyled>
+                                <li>04189011 庫巴</li>
+                                <li>0985231 汪汪</li>
+                                <li>1692793 蘑菇頭</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}
