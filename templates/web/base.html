@@ -17,6 +17,9 @@
 
     <!-- Custom styles for this template -->
     <link href="{% static 'css/nctu-sports.css' %}" rel="stylesheet">
+    
+    <!-- for icon-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   </head>
 
@@ -68,10 +71,32 @@
 {% block content %}
 {% endblock %}
     <!-- Footer -->
-    <footer class="footer footer-custom py-5">
-      <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; 2018 交大體育周</p>
-      </div>
+    <footer class="footer footer-custom pt-4 pb-1">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4 text-center">
+                    <a class="btn btn-outline-light" href="http://sport.sa.nctu.edu.tw/">交通大學體育室</a>
+                </div>
+                <div class="col-sm-3 text-center">
+                    <a class="btn btn-lg" href="https://www.facebook.com/sport.nctu" style="color:white;"><span class="fa fa-facebook-square"></span></a>
+                </div>
+                <div class="col-sm-5 small" style="color:white;">
+                    <h4>聯絡我們</h4>
+                        <p>地址：<span><a href="https://maps.google.com/?q=300新竹市大學路1001號體育館" style="color:white;">30010 新竹市大學路1001號體育館1樓</a></span>
+                        <br>電話： <span>(03) 571-2121&nbsp; #51002</span>
+                        <br>電子郵件：<span><a href="mailto:sport@cc.nctu.edu.tw" style="color:white;">sport@cc.nctu.edu.tw</a></span></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <footer class="footer footer-custom pb-2 pt-2" style="background:#ed851e;">
+        <div class="container">
+            <div class="row my-0">
+                <div class="mx-auto ">
+                    <p class="m-0 text-center text-white small">Copyright © 2018 國立交通大學,&nbsp;Designed by &nbsp; us</p>
+                </div>
+            </div>
+        </div>
     </footer>
 
     <!-- Bootstrap core JavaScript -->

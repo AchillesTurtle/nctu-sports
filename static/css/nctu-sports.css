@@ -3,9 +3,18 @@
  * Copyright 2013-2017 Start Bootstrap
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-blog-post/blob/master/LICENSE)
  */
+ 
+@import url(//fonts.googleapis.com/earlyaccess/notosanstc.css); 
+@import url(https://fonts.googleapis.com/earlyaccess/cwtexming.css);
 
 body {
-  padding-top: 54px;
+    padding-top: 54px;
+    font-family: 'Noto Sans TC', sans-serif; 
+}
+
+h1{
+    font-family: ‘cwTeXMing’, serif;
+    font-weight:800;
 }
 
 @media (min-width: 992px) {
@@ -52,6 +61,31 @@ td a{display:block;}
 
 .footer-custom {background-color: rgba(245,153,61,0.9);}
 
+.navbar-login {
+    background-color: rgba(245,255,255,0.1);
+}
+/* change the brand and text color */
+.navbar-login .navbar-brand,
+.navbar-login .navbar-text {
+    color: rgba(245,153,61,1);
+}
+/* change the link color */
+.navbar-login .navbar-nav .nav-link {
+    color: rgba(245,153,61,.6);
+}
+/* change the color of active or hovered links */
+.navbar-login .nav-item.active .nav-link,
+.navbar-login .nav-item:hover .nav-link {
+    color: rgba(245,153,61,1);
+}
+/* change the color of toggler*/
+.navbar-login .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(245,153,61, 0.8)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+}
+
+.navbar-login.navbar-toggler {
+  border-color: rgb(245,153,61);
+} 
 
 
 /* relevant styles */
@@ -125,3 +159,4 @@ td a{display:block;}
     height: 13vw;
     object-fit: cover;
 }
+
