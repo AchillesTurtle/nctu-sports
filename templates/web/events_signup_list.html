@@ -38,12 +38,8 @@
                             </ul>
                         </td>
                         <td>    
-                            {% if perms.Announcement.delete %}
-                            <a href="{% url 'eventsignup_delete' pk=team.pk %}" class="btn btn float-right" onclick="return confirm('確定取消?')">取消報名</a>
-                            {% endif %}                       
-                            {% if perms.Announcement.change %}
+                            <a href="{% url 'eventsignup_delete' pk=team.pk %}" class="btn btn float-right" onclick="return confirm('確定取消?')">取消報名</a>                       
                             <a href="{% url 'eventsignup_edit' pk=team.pk %}" class="btn btn-warning float-right">修改</a>
-                            {% endif %}                            
                         </td>
                     </tr>
                     {% endfor %}
