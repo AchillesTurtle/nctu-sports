@@ -1,4 +1,4 @@
-# nctusports
+# Nctusports
 This is a django project for nctu sports week website and originally started as our database course final project. 
 Including classical announcement management, user registration, event management functions. 
 Feel free to treat it as a simple template of django project with basic functionalities.
